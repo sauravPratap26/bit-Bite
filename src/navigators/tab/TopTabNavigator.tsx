@@ -13,9 +13,17 @@ function TopTabs() {
       initialRouteName="Home"
       tabBarPosition="bottom"
       screenOptions={{
-        tabBarLabelStyle: { fontSize: 12 },
-        tabBarItemStyle: { width: 100 },
-        tabBarStyle: { backgroundColor: "powderblue" },
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
+        tabBarItemStyle: {
+          width: 100,
+        },
+        tabBarStyle: {
+          backgroundColor: "#F2D7C2",
+        },
+        tabBarActiveTintColor: "#E85D04",
+        tabBarInactiveTintColor: "#6B7280",
       }}
     >
       <Tab.Screen name="Home" component={HomeStack} />

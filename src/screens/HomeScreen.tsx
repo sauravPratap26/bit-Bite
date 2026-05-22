@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { HomeStackParamList } from "../navigation/types";
+import { restaurants } from "../constants";
 
 type HomeNavigationProp = NativeStackNavigationProp<
   HomeStackParamList,
@@ -15,10 +16,14 @@ function HomeScreen() {
   const navigation = useNavigation<HomeNavigationProp>();
   const handleLogout = () => {
     logout();
-    navigation.getParent()?.getParent()?.getParent()?.reset({
-      index: 0,
-      routes: [{ name: "Login" }],
-    });
+    navigation
+      .getParent()
+      ?.getParent()
+      ?.getParent()
+      ?.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
   };
   const insets = useSafeAreaInsets();
 
@@ -31,50 +36,45 @@ function HomeScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.kicker}>Logged in</Text>
         <Text style={styles.heading}>Hi, {user?.name}</Text>
         <Text style={styles.body}>
           Pick a restaurant to view its stack detail screen while the bottom
           swipe tabs remain visible.
         </Text>
 
-        <Pressable
-          accessibilityRole="button"
-          onPress={() =>
-            navigation.navigate("RestaurantDetail", { restaurantId: "123" })
-          }
-          style={({ pressed }) => [
-            styles.restaurantCard,
-            pressed && styles.cardPressed,
-          ]}
-        >
-          <View style={styles.cardTopRow}>
-            <View>
-              <Text style={styles.cardKicker}>Featured restaurant</Text>
-              <Text style={styles.cardTitle}>Spice Garden Bistro</Text>
-            </View>
-            <Text style={styles.rating}>4.8</Text>
-          </View>
-          <Text style={styles.cardBody}>
-            North Indian bowls, grilled snacks, and quick dinner combos ready
-            near you.
-          </Text>
-          <View style={styles.metaRow}>
-            <Text style={styles.metaPill}>25-30 min</Text>
-            <Text style={styles.metaPill}>Id: 123</Text>
-          </View>
-        </Pressable>
+        {restaurants.map((restaurant) => (
+          <Pressable
+            key={restaurant.id}
+            accessibilityRole="button"
+            onPress={() =>
+              navigation.navigate("RestaurantDetail", {
+                restaurantId: restaurant.id,
+              })
+            }
+            style={({ pressed }) => [
+              styles.restaurantCard,
+              pressed && styles.cardPressed,
+            ]}
+          >
+            <View style={styles.cardTopRow}>
+              <View>
+                <Text style={styles.cardKicker}>{restaurant.category}</Text>
 
-        <Pressable
-          accessibilityRole="button"
-          onPress={handleLogout}
-          style={({ pressed }) => [
-            styles.secondaryButton,
-            pressed && styles.secondaryPressed,
-          ]}
-        >
-          <Text style={styles.secondaryButtonText}>Log out</Text>
-        </Pressable>
+                <Text style={styles.cardTitle}>{restaurant.name}</Text>
+              </View>
+
+              <Text style={styles.rating}>{restaurant.rating}</Text>
+            </View>
+
+            <Text style={styles.cardBody}>{restaurant.description}</Text>
+
+            <View style={styles.metaRow}>
+              <Text style={styles.metaPill}>{restaurant.deliveryTime}</Text>
+
+              <Text style={styles.metaPill}>Id: {restaurant.id}</Text>
+            </View>
+          </Pressable>
+        ))}
       </ScrollView>
     </View>
   );

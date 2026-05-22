@@ -2,6 +2,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HomeStackParamList } from "../navigation/types";
+import { restaurantDetails } from "../constants";
+import { useState } from "react";
 
 type RestaurantDetailProps = NativeStackScreenProps<
   HomeStackParamList,
@@ -9,15 +11,36 @@ type RestaurantDetailProps = NativeStackScreenProps<
 >;
 
 const RestaurantCard = ({ route, navigation }: RestaurantDetailProps) => {
+  const [cart, setCart] = useState<Record<string, number>>({});
   const { restaurantId } = route.params;
+
+  const restaurant =
+    restaurantDetails[restaurantId as keyof typeof restaurantDetails];
+
   const insets = useSafeAreaInsets();
+  const addToCart = (itemId: string) => {
+    setCart((prev) => ({
+      ...prev,
+      [itemId]: (prev[itemId] || 0) + 1,
+    }));
+  };
+
+  const removeFromCart = (itemId: string) => {
+    setCart((prev) => ({
+      ...prev,
+      [itemId]: Math.max((prev[itemId] || 0) - 1, 0),
+    }));
+  };
 
   return (
     <View style={styles.screen}>
       <ScrollView
         contentContainerStyle={[
           styles.content,
-          { paddingTop: insets.top + 24, paddingBottom: insets.bottom + 24 },
+          {
+            paddingTop: insets.top + 24,
+            paddingBottom: insets.bottom + 24,
+          },
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -33,34 +56,65 @@ const RestaurantCard = ({ route, navigation }: RestaurantDetailProps) => {
         </Pressable>
 
         <View style={styles.heroCard}>
-          <Text style={styles.kicker}>Restaurant detail</Text>
-          <Text style={styles.title}>Spice Garden Bistro</Text>
-          <Text style={styles.subtitle}>
-            Restaurant ID: {restaurantId}
-          </Text>
-          <Text style={styles.description}>
-            This screen is pushed inside the Home tab stack, so your swipeable
-            bottom tabs stay visible while the restaurant detail opens.
-          </Text>
+          <Text style={styles.kicker}>Restaurant Detail</Text>
+
+          <Text style={styles.title}>{restaurant.name}</Text>
+
+          <Text style={styles.subtitle}>Restaurant ID: {restaurantId}</Text>
+
+          <Text style={styles.description}>{restaurant.description}</Text>
         </View>
 
         <View style={styles.infoGrid}>
           <View style={styles.infoBox}>
-            <Text style={styles.infoValue}>4.8</Text>
+            <Text style={styles.infoValue}>{restaurant.rating}</Text>
+
             <Text style={styles.infoLabel}>Rating</Text>
           </View>
+
           <View style={styles.infoBox}>
-            <Text style={styles.infoValue}>25m</Text>
+            <Text style={styles.infoValue}>{restaurant.deliveryTime}</Text>
+
             <Text style={styles.infoLabel}>Delivery</Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Popular today</Text>
-          <Text style={styles.sectionBody}>
-            Paneer tikka bowl, butter chicken combo, masala fries, and mango
-            cooler.
-          </Text>
+          <Text style={styles.sectionTitle}>Popular Today</Text>
+
+          <View style={styles.itemsContainer}>
+            {restaurant.popularItems.map((item) => {
+              const quantity = cart[item.id] || 0;
+
+              return (
+                <View key={item.id} style={styles.foodCard}>
+                  <View>
+                    <Text style={styles.foodTitle}>{item.name}</Text>
+
+                    <Text style={styles.foodPrice}>₹{item.price}</Text>
+                  </View>
+
+                  <View style={styles.cartControls}>
+                    <Pressable
+                      onPress={() => removeFromCart(item.id)}
+                      style={styles.cartButton}
+                    >
+                      <Text style={styles.cartButtonText}>-</Text>
+                    </Pressable>
+
+                    <Text style={styles.quantityText}>{quantity}</Text>
+
+                    <Pressable
+                      onPress={() => addToCart(item.id)}
+                      style={styles.cartButton}
+                    >
+                      <Text style={styles.cartButtonText}>+</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -152,20 +206,78 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "700",
   },
-  section: {
-    backgroundColor: "#1F2937",
-    borderRadius: 8,
-    padding: 18,
-  },
-  sectionTitle: {
-    color: "#FFFFFF",
-    fontSize: 18,
-    fontWeight: "800",
-    marginBottom: 8,
-  },
+
   sectionBody: {
     color: "#E5E7EB",
     fontSize: 14,
     lineHeight: 21,
+  },
+  section: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#F2D7C2",
+    marginTop: 8,
+  },
+
+  sectionTitle: {
+    color: "#1F2937",
+    fontSize: 22,
+    fontWeight: "800",
+    marginBottom: 18,
+  },
+
+  itemsContainer: {
+    gap: 16,
+  },
+
+  foodCard: {
+    backgroundColor: "#FFF8F1",
+    borderRadius: 18,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: "#F2D7C2",
+  },
+
+  foodTitle: {
+    color: "#1F2937",
+    fontSize: 18,
+    fontWeight: "800",
+    marginBottom: 8,
+  },
+
+  foodPrice: {
+    color: "#E85D04",
+    fontSize: 17,
+    fontWeight: "800",
+  },
+
+  cartControls: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 18,
+  },
+
+  cartButton: {
+    backgroundColor: "#E85D04",
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  cartButtonText: {
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontWeight: "800",
+  },
+
+  quantityText: {
+    color: "#1F2937",
+    fontSize: 18,
+    fontWeight: "800",
+    marginHorizontal: 18,
   },
 });

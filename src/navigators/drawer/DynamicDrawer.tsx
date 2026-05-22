@@ -88,15 +88,15 @@ function DynamicDrawer() {
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
-        drawerStyle: styles.drawer,
         headerStyle: styles.header,
         headerTintColor: "#1F2937",
         headerTitleStyle: styles.headerTitle,
-        title: "bit Bite",
+        headerTitle: "",
+        drawerStyle: styles.drawer,
       }}
     >
       <Drawer.Screen name="MainTabs" component={TopTabs} />
-      <Drawer.Screen name="RandomScreen" component = {randomScreen} />
+      <Drawer.Screen name="RandomScreen" component={randomScreen} />
     </Drawer.Navigator>
   );
 }

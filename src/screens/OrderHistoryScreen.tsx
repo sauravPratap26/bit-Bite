@@ -34,8 +34,8 @@ function OrderHistoryScreen() {
       <Text style={styles.kicker}>Drawer page</Text>
       <Text style={styles.title}>Order History</Text>
       <Text style={styles.body}>
-        This screen is on the root stack, so it opens full-screen without the
-        bottom tabs. Press Back to return to the tab you came from.
+        This will be dynamic later on, but for now it shows that the drawer can
+        open a full-screen stack page with no tabs.
       </Text>
     </View>
   );
