@@ -260,9 +260,6 @@ Text: #1F2937
 
 # Screenshots
 
-Add screenshots inside `/screenshots`
-
-```md
 ![Home](./screenshots/home.png)
 
 ![Search](./screenshots/drawer.png)
@@ -271,8 +268,11 @@ Add screenshots inside `/screenshots`
 
 ![Profile](./screenshots/login.jpeg)
 
-![Demo](./demo/demo.mp4)
-```
+---
+
+# Demo Video
+
+[Watch Demo](./demo/demo.mp4)
 
 ---
 
