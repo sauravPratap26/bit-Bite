@@ -9,7 +9,7 @@ function HomeStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeList" component={HomeScreen} />
-      <Stack.Screen name="RestaurantDetail" component={RestaurantCard} />
+      {/* <Stack.Screen name="RestaurantDetail" component={RestaurantCard} /> */}
     </Stack.Navigator>
   );
 }

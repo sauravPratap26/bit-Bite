@@ -3,28 +3,15 @@ import { useAuth } from "../context/AuthContext";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { HomeStackParamList } from "../navigation/types";
+import { DrawerParamList, HomeStackParamList, MainStackParamList } from "../navigation/types";
 import { restaurants } from "../constants";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 
-type HomeNavigationProp = NativeStackNavigationProp<
-  HomeStackParamList,
-  "HomeList"
->;
-
+type HomeNavigationProp = DrawerNavigationProp<DrawerParamList, "MainTabs">;
 function HomeScreen() {
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
   const navigation = useNavigation<HomeNavigationProp>();
-  const handleLogout = () => {
-    logout();
-    navigation
-      .getParent()
-      ?.getParent()
-      ?.getParent()
-      ?.reset({
-        index: 0,
-        routes: [{ name: "Login" }],
-      });
-  };
+
   const insets = useSafeAreaInsets();
 
   return (

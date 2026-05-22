@@ -9,6 +9,7 @@ export type RootStackParamList = {
 
 export type DrawerParamList = {
   MainTabs: undefined;
+  RestaurantDetail: { restaurantId: string };
   RandomScreen: undefined;
 };
 
@@ -21,5 +22,12 @@ export type MainTabParamList = {
 
 export type HomeStackParamList = {
   HomeList: undefined;
-  RestaurantDetail: { restaurantId: string };
+};
+
+export type MainStackParamList = {
+  Tabs: undefined;
+
+  RestaurantDetail: {
+    restaurantId: string;
+  };
 };

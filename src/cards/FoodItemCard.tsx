@@ -1,22 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useCart } from "../context/CartContext";
 
 const FoodItemCard = (item: any) => {
-  const [cart, setCart] = useState<Record<string, number>>({});
-
-  const addToCart = (itemId: string) => {
-    setCart((prev) => ({
-      ...prev,
-      [itemId]: (prev[itemId] || 0) + 1,
-    }));
-  };
-
-  const removeFromCart = (itemId: string) => {
-    setCart((prev) => ({
-      ...prev,
-      [itemId]: Math.max((prev[itemId] || 0) - 1, 0),
-    }));
-  };
+const {cart, addToCart, removeFromCart} = useCart();
   const quantity = cart[item.id] || 0;
 
   return (

@@ -1,13 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { HomeStackParamList } from "../navigation/types";
+import { DrawerParamList, HomeStackParamList } from "../navigation/types";
 import { restaurantDetails } from "../constants";
 import { useState } from "react";
 import FoodItemCard from "./FoodItemCard";
+import { DrawerScreenProps } from "@react-navigation/drawer";
 
-type RestaurantDetailProps = NativeStackScreenProps<
-  HomeStackParamList,
+type RestaurantDetailProps = DrawerScreenProps<
+  DrawerParamList,
   "RestaurantDetail"
 >;
 
@@ -18,7 +19,6 @@ const RestaurantCard = ({ route, navigation }: RestaurantDetailProps) => {
     restaurantDetails[restaurantId as keyof typeof restaurantDetails];
 
   const insets = useSafeAreaInsets();
-
 
   return (
     <View style={styles.screen}>
@@ -72,10 +72,7 @@ const RestaurantCard = ({ route, navigation }: RestaurantDetailProps) => {
 
           <View style={styles.itemsContainer}>
             {restaurant.popularItems.map((item) => {
-
-              return (
-                <FoodItemCard key={item.id} {...item} />
-              );
+              return <FoodItemCard key={item.id} {...item} />;
             })}
           </View>
         </View>
@@ -194,6 +191,4 @@ const styles = StyleSheet.create({
   itemsContainer: {
     gap: 16,
   },
-
-
 });

@@ -9,6 +9,7 @@ import { DrawerParamList, RootStackParamList } from "../../navigation/types";
 import { useAuth } from "../../context/AuthContext";
 import TopTabs from "../tab/TopTabNavigator";
 import randomScreen from "../../screens/randomScreen";
+import RestaurantCard from "../../cards/RestaurantCard";
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
@@ -96,7 +97,7 @@ function DynamicDrawer() {
       }}
     >
       <Drawer.Screen name="MainTabs" component={TopTabs} />
-      <Drawer.Screen name="RandomScreen" component={randomScreen} />
+      <Drawer.Screen name="RestaurantDetail" component={RestaurantCard} />
     </Drawer.Navigator>
   );
 }
