@@ -16,6 +16,8 @@ type AuthContextValue = {
   isLoggedIn: boolean;
   login: (email: string) => void;
   logout: () => void;
+  changeUserName: (name: string) => void;
+  changePassword: (password: string) => void;
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -34,6 +36,16 @@ export function AuthProvider({ children }: PropsWithChildren) {
         });
       },
       logout: () => setUser(null),
+      changeUserName: (name: string) => {
+        if (user) {
+          setUser({ ...user, name });
+        }
+      },
+      changePassword: (password: string) => {
+        if (user) {
+          // In a real app, you would update the user's password here
+        }
+      },
     }),
     [user],
   );
