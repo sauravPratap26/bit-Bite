@@ -39,7 +39,7 @@ export function LoginScreen() {
 
     navigation.reset({
       index: 0,
-      routes: [{ name: "Home" }],
+      routes: [{ name: "LeftDrawer" }],
     });
   };
 
